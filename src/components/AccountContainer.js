@@ -24,9 +24,12 @@ function AccountContainer() {
   }, []);
   return (
     <div>
-      <Search />
-      <AddTransactionForm />
-      <TransactionsList />
+      <Search transactions={transactions} setTransactions={setTransactions} />
+      <AddTransactionForm
+        transactions={transactions}
+        setTransactions={setTransactions}
+      />
+      <TransactionsList transactions={transactions} />
     </div>
   );
 }
