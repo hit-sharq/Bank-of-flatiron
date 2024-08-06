@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TransactionsList from "./TransactionsList";
 import Search from "./Search";
 import AddTransactionForm from "./AddTransactionForm";
 
 function AccountContainer() {
   const [transactions, setTransactions] = useState([]);
+  const [filteredTransactions, setFilteredTransactions] = useState([]);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -15,6 +16,7 @@ function AccountContainer() {
         }
         const data = await response.json();
         setTransactions(data);
+        setFilteredTransactions(data); // Initialize with all transactions
       } catch (error) {
         console.error(error.message);
       }
@@ -24,12 +26,16 @@ function AccountContainer() {
   }, []);
   return (
     <div>
-      <Search transactions={transactions} setTransactions={setTransactions} />
+      <Search
+        transactions={transactions}
+        setFilteredTransactions={setFilteredTransactions}
+      />
       <AddTransactionForm
         transactions={transactions}
         setTransactions={setTransactions}
+        setFilteredTransactions={setFilteredTransactions}
       />
-      <TransactionsList transactions={transactions} />
+      <TransactionsList transactions={filteredTransactions} />
     </div>
   );
 }

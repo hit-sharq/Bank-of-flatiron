@@ -1,9 +1,13 @@
 import { useState } from "react";
 
-function AddTransactionForm({ transactions, setTransactions }) {
+function AddTransactionForm({
+  transactions,
+  setTransactions,
+  setFilteredTransactions,
+}) {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState("");
   const [date, setDate] = useState("");
 
   const generateUniqueId = () => {
@@ -48,7 +52,12 @@ function AddTransactionForm({ transactions, setTransactions }) {
     try {
       const transactionData = createTransactionData();
       await saveTransaction(transactionData);
-      setTransactions([...transactions, transactionData]);
+
+      // Update both transactions and filteredTransactions
+      const updatedTransactions = [...transactions, transactionData];
+      setTransactions(updatedTransactions);
+      setFilteredTransactions(updatedTransactions); // Reset the filtered list to include the new transaction
+
       resetForm();
     } catch (error) {
       console.error("Something went wrong!", error);
